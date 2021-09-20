@@ -16,18 +16,18 @@ html(lang='en')
     }
   body
     p
-      | This is a sample web service for use with OpenTok. See the OpenTok 
+      | This is a sample web service for use with OpenTok. See the OpenTok
       a(href='https://github.com/opentok/learning-opentok-node')
         | learning-opentok-node
       |  repo on GitHub.
     p
-      | Resources are defined at the following endpoints:
+      | Resources are defined at the following endpoints, check them:
       table
         tr
           td GET /session
           td Return an OpenTok API key, session ID, and token.
         tr
-          td GET /room/:name 
+          td GET /room/:name
           td Return an OpenTok API key, session ID, and token associated with a room name.
         tr
           td POST /archive/start
@@ -43,6 +43,6 @@ html(lang='en')
           td Return metadata for the specified archive.
         tr
           td GET /archive
-          td Return a list of archives. 
+          td Return a list of archives.
             a(href='https://tokbox.com/developer/sdks/node/reference/OpenTok.html#listArchives') More Information
           td Pagination is enabled by applying either count or offset parameteres.
