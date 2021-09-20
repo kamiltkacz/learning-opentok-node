@@ -52,6 +52,44 @@ router.get('/room/:name', function (req, res) {
   var token;
   console.log('attempting to create a session associated with the room: ' + roomName);
 
+  if (localStorage[roomName]) {
+    // fetch an existing sessionId
+    const sessionId = localStorage[roomName]
+
+    // generate token
+    token = opentok.generateToken(sessionId);
+    res.setHeader('Content-Type', 'application/json');
+    res.send({
+      "apiKey": apiKey,
+      "sessionId": sessionId,
+      "token": token
+    });
+  }
+  else {
+    // Create a session that will attempt to transmit streams directly between
+    // clients. If clients cannot connect, the session uses the OpenTok TURN server:
+    opentok.createSession({mediaMode:"relayed"}, function(err, session) {
+      if (err) {
+        console.log(err);
+        res.status(500).send({error: 'createSession error:', err});
+        return;
+      }
+
+      // store into local
+      localStorage[roomName] = session.sessionId;
+
+      // generate token
+      token = opentok.generateToken(session.sessionId);
+      res.setHeader('Content-Type', 'application/json');
+      res.send({
+        "apiKey": apiKey,
+        "sessionId": session.sessionId,
+        "token": token
+      });
+    });
+  }
+
+
   // if the room name is associated with a session ID, fetch that
   if (roomToSessionIdDictionary[roomName]) {
     sessionId = roomToSessionIdDictionary[roomName];
